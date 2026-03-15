@@ -24,6 +24,7 @@ public class Main {
 
         biblioteca.armazenarLivros(livroUm);
         biblioteca.armazenarLivros(livroDois);
+        biblioteca.armazenarLivros(livroTres);
 
         int opcao = 0;
 
@@ -42,7 +43,49 @@ public class Main {
                     System.out.println("Livros disponíveis na biblioteca:");
                     for (Livro l : biblioteca.getLivros()) {
                         if (l.getStatusDisponibilidade().equals("Disponível")) {
-                            System.out.println("- " + l.getTitulo() + " (ISBN: " + l.getIsbn() + ") - Autor: " + l.getAutor().getNome() + " - Status: " + l.getStatusDisponibilidade());
+                            System.out.println("ID do livro: "  + l.getId() + " - " + l.getTitulo() + " (ISBN: " + l.getIsbn() + ") - Autor: " + l.getAutor().getNome() + " - Status: " + l.getStatusDisponibilidade());
+                        }
+                    }
+                    System.out.println("Deseja alugar algum livro ?");
+                    System.out.println("1: SIM");
+                    System.out.println("2: NAO");
+                    int resposta = leitor.nextInt();
+                    
+                    if (resposta == 1) {
+
+                        System.out.println("Digite o id do livro que deseja alugar:");
+
+                        int idLivro = leitor.nextInt();
+                        boolean encontrado = false;
+
+                        for (Livro l : biblioteca.getLivros()) {
+                            if (l.getId() == idLivro) {
+                                if (l.getStatusDisponibilidade().equals("Disponível")) {
+                                    System.out.println("Digite o nome do cliente:");
+                                    leitor.nextLine();
+                                    String nomeCliente = leitor.nextLine();
+                                    
+                                    l.setStatusDisponibilidade("Indisponivel");
+                                    
+                                    Emprestimo emprestimo = new Emprestimo(
+                                        biblioteca.getEmprestimos().size() + 1,
+                                        l,
+                                        nomeCliente,
+                                        LocalDate.now(),
+                                        LocalDate.now().plusDays(14)
+                                    );
+                                    biblioteca.armazenarEmprestimos(emprestimo);
+                                    
+                                    System.out.println("Livro '" + l.getTitulo() + "' alugado com sucesso!");
+                                } else {
+                                    System.out.println("Este livro já está indisponível.");
+                                }
+                                encontrado = true;
+                                break;
+                            }
+                        }
+                        if (!encontrado) {
+                            System.out.println("Livro com ID " + idLivro + " não encontrado.");
                         }
                     }
                     break;

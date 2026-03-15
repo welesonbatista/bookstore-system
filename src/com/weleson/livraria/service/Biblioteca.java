@@ -72,8 +72,17 @@ public class Biblioteca {
         System.out.println();
     }
 
-    public void armazenarEmprestimos (){
 
+
+    public void armazenarEmprestimos (Emprestimo emprestimo){
+        this.emprestimos.add(emprestimo);
+        System.out.println("Empréstimo armazenado com sucesso: " + emprestimo.getLivro().getTitulo() + " para " + emprestimo.getNomeCliente());
+        System.out.println("Total de empréstimos na biblioteca: " + this.emprestimos.size());
+        System.out.println("Empréstimos atuais na biblioteca:");
+        for (Emprestimo e : this.emprestimos) {
+            System.out.println("- Livro: " + e.getLivro().getTitulo() + " | Cliente: " + e.getNomeCliente() + " | Data de Empréstimo: " + e.getDataEmprestimo() + " | Data de Devolução: " + e.getDataDevolucao());
+        }
+        System.out.println();
     }
 
 }
